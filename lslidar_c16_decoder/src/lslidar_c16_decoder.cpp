@@ -51,7 +51,9 @@ bool LslidarC16Decoder::loadParameters() {
     pnh.param<bool>("apollo_interface", apollo_interface, false);
     pnh.param<string>("fixed_frame_id", fixed_frame_id, "map");
     pnh.param<string>("child_frame_id", child_frame_id, "lslidar");
-
+    
+    ROS_INFO("Load paramter: angle_disable_min :%f " ,angle_disable_min);
+    ROS_INFO("Load paramter: angle_disable_max :%f ",angle_disable_max);
     angle_base = M_PI*2 / point_num;
 
     if (apollo_interface)
@@ -68,10 +70,10 @@ bool LslidarC16Decoder::createRosIO() {
                 "lslidar_sweep", 10);
     point_cloud_pub = nh.advertise<sensor_msgs::PointCloud2>(
                 "lslidar_point_cloud", 10);
-    scan_pub = nh.advertise<sensor_msgs::LaserScan>(
-                "scan", 100);
-    channel_scan_pub = nh.advertise<lslidar_c16_msgs::LslidarC16Layer>(
-                "scan_channel", 100);
+    // scan_pub = nh.advertise<sensor_msgs::LaserScan>(
+    //             "scan", 100);
+    // channel_scan_pub = nh.advertise<lslidar_c16_msgs::LslidarC16Layer>(
+    //             "scan_channel", 100);
     return true;
 }
 
@@ -227,10 +229,10 @@ void LslidarC16Decoder::publishChannelScan()
         scan.ranges[point_num - 1-point_idx] = sweep_data->scans[j].points[i].distance;
         scan.intensities[point_num - 1-point_idx] = sweep_data->scans[j].points[i].intensity;
     }
-
+        ROS_INFO("Point num: %d ",point_num);
     for (int i = point_num - 1; i >= 0; i--)
 	{
-		if((i >= angle_disable_min*point_num/360) && (i < angle_disable_max*point_num/360))
+		if((i >= angle_disable_min*point_num/360.0) && (i < angle_disable_max*point_num/360.0))
 			scan.ranges[i] = std::numeric_limits<float>::infinity();
 	}
 
@@ -280,10 +282,10 @@ void LslidarC16Decoder::publishScan()
         scan->ranges[point_num - 1-point_idx] = sweep_data->scans[layer_num_local].points[i].distance;
         scan->intensities[point_num - 1-point_idx] = sweep_data->scans[layer_num_local].points[i].intensity;
     }
-
+        ROS_INFO("Point num: %d ",point_num);
     for (int i = point_num - 1; i >= 0; i--)
 	{
-		if((i >= angle_disable_min*point_num/360) && (i < angle_disable_max*point_num/360))
+		if((i >= angle_disable_min*point_num/360.0) && (i < angle_disable_max*point_num/360.0))
 			scan->ranges[i] = std::numeric_limits<float>::infinity();
 	}
 
@@ -522,11 +524,11 @@ void LslidarC16Decoder::packetCallback(
 
         if (publish_point_cloud) publishPointCloud();
         
-        if (publish_channels)
-            publishChannelScan();
-        else{
-            publishScan();
-        }
+        // if (publish_channels)
+        //     publishChannelScan();
+        // else{
+        //     publishScan();
+        // }
 
         sweep_data = lslidar_c16_msgs::LslidarC16SweepPtr(
                     new lslidar_c16_msgs::LslidarC16Sweep());
