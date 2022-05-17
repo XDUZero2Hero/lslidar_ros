@@ -12,12 +12,15 @@
 
     <param name="min_range" value="0.3" />
     <param name="max_range" value="100.0" />
-    <param name="frequency" value="10.0" />
+    <param name="frequency" value="20.0" />
     <param name="publish_point_cloud" value="true" />
+
     <param name="ground_point_min_laser_index" value="0" />
-    <param name="ground_point_max_laser_index" value="7" />
-    <param name="ground_point_min_angle" value="90" />
-    <param name="ground_point_distance_tolerance" value="0.03" />
+    <param name="ground_point_max_laser_index" value="15" />
+
+    <param name="ground_point_min_angle" value="1" />
+    <param name="ground_point_distance_tolerance" value="0.05" />
+
   </node>
 
   <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lslidar_c16_decoder)/launch/lslidar_c16.rviz" output="screen"/>

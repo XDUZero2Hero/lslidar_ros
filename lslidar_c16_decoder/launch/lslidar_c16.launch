@@ -15,9 +15,16 @@
     <param name="angle_disable_max" value="0"/>
     <param name="min_range" value="0.70"/>
     <param name="max_range" value="100.0"/>
-    <param name="frequency" value="10.0"/>
+    <param name="frequency" value="20.0"/>
     <param name="publish_point_cloud" value="true"/>
     <param name="publish_channels" value="false"/>
+
+    <param name="ground_point_min_laser_index" value="0" />
+    <param name="ground_point_max_laser_index" value="15" />
+
+    <param name="ground_point_min_angle" value="30" />
+    <param name="ground_point_distance_tolerance" value="0.2" />
+
     <remap from="lslidar_point_cloud" to="$(arg topic_name)"/>
   </node>
 
